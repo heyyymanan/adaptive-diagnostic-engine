@@ -6,7 +6,7 @@ This project implements a **1-Dimensional Adaptive Testing Engine** that dynamic
 
 Unlike static quizzes where every student receives the same questions, this system adapts in real-time using an **Item Response Theory (IRT) inspired model** to update the learner’s ability score. The result is a diagnostic engine capable of quickly estimating a student's skill level and generating a **personalized learning plan** based on weaknesses detected during the test.
 
----
+
 
 ## My Journey & Thoughtful AI Integration
 

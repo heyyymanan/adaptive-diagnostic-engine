@@ -2,6 +2,14 @@
 
 A lightweight 1-Dimensional Adaptive Testing Prototype built directly to dynamically select questions to gauge a student's proficiency level based on their previous answers.
 
+## Screenshots
+
+![Sample Image 1 (Welcome Screen)](./assets/1.png)
+![Sample Image 2 (Test Question)](./assets/2.png)
+![Sample Image 3 (Study Plan)](./assets/3.png)
+
+---
+
 ## Setup Instructions
 
 1. Clone the repository
