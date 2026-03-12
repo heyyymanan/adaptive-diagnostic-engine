@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>README - Adaptive Diagnostic Engine</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem 3rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #2c3e50;
+            margin-top: 1.5rem;
+        }
+
+        h1 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.3rem;
+            color: #2980b9;
+        }
+
+        pre,
+        code {
+            background-color: #f4f4f4;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        pre {
+            padding: 1rem;
+            overflow-x: auto;
+            border: 1px solid #ddd;
+        }
+
+        code {
+            padding: 0.2rem 0.4rem;
+            color: #c0392b;
+        }
+
+        ul,
+        ol {
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight {
+            background-color: #e8f4f8;
+            padding: 1.5rem;
+            border-left: 4px solid #3498db;
+            border-radius: 0 4px 4px 0;
+            margin: 1.5rem 0;
+        }
+
+        .journey-card {
+            background-color: #fdfdfd;
+            border: 1px solid #eaeaea;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #9b59b6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Adaptive Diagnostic Engine</h1>
+
+        <p>A sophisticated 1-Dimensional Adaptive Testing Engine built to dynamically estimate a student's proficiency
+            level in real-time by intelligently selecting questions based on previous answers.</p>
+
+        <h2>My Journey & Thoughtful AI Integration</h2>
+        <div class="journey-card">
+            <p>I built this project to deepen my understanding of adaptive algorithms, full-stack architecture, and
+                real-world API management. While I leveraged AI assistance to accelerate development, I intentionally
+                used AI as a thought partner-guiding the architecture and solving technical constraints thoughtfully,
+                rather than relying on it to blindly generate code.</p>
+
+            <h3>Key Engineering Decisions:</h3>
+            <ul>
+                <li><strong>Strategic Token Optimization (Cost Management):</strong> Running this engine on free-tier
+                    LLM plans posed a significant challenge regarding token limits and request costs. I realized that
+                    sending unchecked session histories to the AI for study plan generation would quickly exhaust the
+                    quota. To solve this, I designed a <strong>token-optimization heuristic</strong>. Instead of using
+                    heavy dependencies like <code>tiktoken</code> (which would bloat the project), I instructed the AI
+                    to help me implement a generalized 4-characters-per-token mathematical approximation. My algorithm
+                    dynamically truncates the least critical context when approaching token boundaries, ensuring the LLM
+                    integration remains cost-effective, performant, and perfectly tailored for a free-tier environment.
+                </li>
+                <li><strong>Item Response Theory (IRT) Implementation:</strong> To make the test truly adaptive, I
+                    independently researched IRT models to calculate the probability of a correct answer using logistic
+                    curves. I translated these mathematical models into a performant Python algorithm to update the
+                    student's ability using gradient descent.</li>
+                <li><strong>Resilient LLM Provider Architecture:</strong> To prevent vendor lock-in and ensure high
+                    availability, I engineered the system to support multiple LLM providers (Google Gemini and OpenAI).
+                    If one API reaches its free-tier limit, the system can seamlessly switch to the other via simple
+                    environment configuration.</li>
+            </ul>
+        </div>
+
+        <h2>Instructions on How to Run the Project</h2>
+        <ol>
+            <li><strong>Clone the repository</strong> to your local machine.</li>
+            <li><strong>Set up a Python virtual environment:</strong>
+                <pre>python -m venv venv
+# On Mac/Linux:
+source venv/bin/activate  
+# On Windows:
+venv\Scripts\activate</pre>
+            </li>
+            <li><strong>Install dependencies:</strong>
+                <pre>pip install -r requirements.txt</pre>
+            </li>
+            <li><strong>Set up environment variables</strong> locally in a <code>.env</code> file at the root. You need:
+                <pre>MONGO_URI=mongodb+srv://&lt;user&gt;:&lt;password&gt;@&lt;cluster&gt;.mongodb.net/?appName=&lt;AppName&gt;
+DB_NAME=adaptive_engine
+LLM_PROVIDER=gemini
+GEMINI_API_KEY=your_gemini_api_key_here
+OPENAI_API_KEY=your_openai_api_key_here</pre>
+            </li>
+            <li><strong>Seed the database</strong> with the initial questions:
+                <pre>python seed_questions.py</pre>
+            </li>
+            <li><strong>Run the FastAPI application:</strong>
+                <pre>uvicorn app.main:app --reload</pre>
+                <em>The API will be available at <a href="http://127.0.0.1:8000/docs"
+                        target="_blank">http://127.0.0.1:8000/docs</a> (Swagger UI).</em>
+            </li>
+        </ol>
+
+        <h2>Adaptive Algorithm Logic</h2>
+        <div class="highlight">
+            <p>The application implements a 1-Dimensional Item Response Theory (IRT) model to estimate a student's
+                ability.</p>
+            <ol>
+                <li><strong>Starting Point:</strong> Every session starts with an estimated <code>ability_score</code>
+                    of 0.5 (Scale 0.1 to 1.0).</li>
+                <li><strong>Next Question Selection:</strong> The engine looks for an unasked question with a
+                    <code>difficulty</code> closest to the user's current <code>ability_score</code>.
+                </li>
+                <li><strong>Refinement:</strong> After receiving a correct (1) or incorrect (0) answer, the probability
+                    of getting the question correct is predicted using the logistic curve:
+                    <br><code>P = 1 / (1 + exp(difficulty - ability))</code>.
+                </li>
+                <li><strong>Update:</strong> The ability is then updated using a gradient descent step:
+                    <br><code>new_ability = old_ability + learning_rate * (actual - predicted)</code>.
+                </li>
+            </ol>
+        </div>
+    </div>
+</body>
+
+</html>

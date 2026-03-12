@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Diagnostic Engine</title>
+    <meta name="description" content="An adaptive testing engine using AI to measure proficiency intuitively.">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app" class="app-container">
+        
+        <!-- Welcome Screen -->
+        <section id="welcome-view" class="view active">
+            <div class="glass-card welcome-card">
+                <div class="icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <h1>Adaptive Diagnostic Engine</h1>
+                <p>Test your knowledge with an AI-driven, dynamic question engine that intuitively adapts to your true proficiency level in real-time.</p>
+                <button id="start-btn" class="primary-btn pulse">Start Assessment</button>
+            </div>
+        </section>
+
+        <!-- Question Screen -->
+        <section id="question-view" class="view hidden">
+            <div class="header-stats">
+                <div class="stat-badge">Question <span id="q-counter">1</span> / 10</div>
+                <div class="stat-badge difficulty">Difficulty: <span id="q-difficulty">0.50</span></div>
+            </div>
+            
+            <div class="glass-card question-card">
+                <h2 id="question-text">Loading question...</h2>
+                <div id="options-container" class="options-grid">
+                    <!-- Options injected here via JS -->
+                </div>
+                
+                <div id="feedback-container" class="feedback-toast hidden">
+                    <div class="feedback-icon" id="feedback-icon"></div>
+                    <span id="feedback-text"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Screen -->
+        <section id="results-view" class="view hidden">
+            <div class="glass-card results-card">
+                <h2>Assessment Complete!</h2>
+                <div class="score-display">
+                    <div class="score-circle">
+                        <span id="final-score">0.00</span>
+                        <span class="score-label">Final Ability</span>
+                    </div>
+                </div>
+                
+                <div id="study-plan-container" class="study-plan-section">
+                    <div class="loading-pulse">
+                        <div class="dot-typing"></div>
+                        <p>AI is generating your custom study plan...</p>
+                    </div>
+                    <div id="study-plan-content" class="hidden markdown-body"></div>
+                </div>
+                <button id="restart-btn" class="secondary-btn">Take Another Test</button>
+            </div>
+        </section>
+        
+    </div>
+    
+    <!-- Background Elements -->
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+    <div class="bg-shape shape-3"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem 3rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #2980b9;
+            margin-top: 1.5rem;
+        }
+
+        .endpoint {
+            background-color: #fdfdfd;
+            border: 1px solid #eaeaea;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #2ecc71;
+            transition: transform 0.2s;
+        }
+
+        .endpoint:hover {
+            transform: translateX(5px);
+        }
+
+        .endpoint.get {
+            border-left-color: #3498db;
+        }
+
+        .endpoint.post {
+            border-left-color: #2ecc71;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-right: 10px;
+        }
+
+        .method.get {
+            background-color: #3498db;
+        }
+
+        .method.post {
+            background-color: #2ecc71;
+        }
+
+        .path {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .description {
+            margin-top: 10px;
+            color: #555;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            border: 1px solid #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>API Documentation</h1>
+        <p>The Adaptive Diagnostic Engine exposes a high-performance RESTful API built with FastAPI. The architecture
+            was specifically designed for low-latency responses, supporting real-time adaptive questioning and seamless
+            token-optimized LLM integrations.</p>
+
+        <div class="endpoint post">
+            <div><span class="method post">POST</span><span class="path">/start-session</span></div>
+            <div class="description">
+                <p>Initializes a new diagnostic testing session. It sets up a new user tracking record in MongoDB with a
+                    baseline ability score of 0.5.</p>
+                <strong>Returns:</strong>
+                <pre>{
+  "session_id": "string",
+  "ability_score": 0.5
+}</pre>
+            </div>
+        </div>
+
+        <div class="endpoint get">
+            <div><span class="method get">GET</span><span class="path">/next-question/{session_id}</span></div>
+            <div class="description">
+                <p>Retrieves the next question tailored to the student's current ability score. The engine dynamically
+                    calculates the appropriate question using a custom IRT-based selection algorithm, guaranteeing the
+                    student is continually challenged at their optimal level.</p>
+            </div>
+        </div>
+
+        <div class="endpoint post">
+            <div><span class="method post">POST</span><span class="path">/submit-answer</span></div>
+            <div class="description">
+                <p>Submits a student's answer, evaluates correctness against the database, and updates the internal
+                    `ability_score` using Item Response Theory (IRT) gradient descent. This feedback loop is the core of
+                    the adaptive experience.</p>
+                <strong>Request Body:</strong>
+                <pre>{
+  "session_id": "string",
+  "question_id": "string",
+  "answer": "string"
+}</pre>
+            </div>
+        </div>
+
+        <div class="endpoint get">
+            <div><span class="method get">GET</span><span class="path">/study-plan/{session_id}</span></div>
+            <div class="description">
+                <p>Generates a hyper-personalized actionable study plan. To ensure this endpoint runs efficiently on a
+                    free-tier setup, it passes session data through a custom <strong>Token Optimization
+                        Heuristic</strong> before interacting with the LLM API. The system intelligently switches
+                    between Google Gemini and OpenAI based on provider availability to guarantee high uptime.</p>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
